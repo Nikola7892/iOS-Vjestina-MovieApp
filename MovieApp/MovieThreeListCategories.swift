@@ -7,6 +7,7 @@ class MovieThreeListCategories: UIViewController {
     private var popularMovies: [MovieModel] = []
     private var freeToWatchMovies: [MovieModel] = []
     private var trendingMovies: [MovieModel] = []
+  
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,25 +46,23 @@ class MovieThreeListCategories: UIViewController {
 
 extension MovieThreeListCategories: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: SectionTableViewCell.reuseIdentifier, for: indexPath) as! SectionTableViewCell
         
-        if(indexPath.section==0){
+        if indexPath.row == 0 {
             cell.titleLabel.text = "What's Popular"
             cell.collectionView.tag = 0
-        }
-        else if(indexPath.section==1){
+        } else if indexPath.row == 1 {
             cell.titleLabel.text = "Free to Watch"
             cell.collectionView.tag = 1
-        }
-        else {
+        } else {
             cell.titleLabel.text = "Trending"
             cell.collectionView.tag = 2
         }
@@ -71,9 +70,10 @@ extension MovieThreeListCategories: UITableViewDataSource, UITableViewDelegate {
         cell.collectionView.delegate = self
         cell.collectionView.dataSource = self
         cell.collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "CollectionViewCell")
-    
+
         return cell
     }
+
 }
 
 extension MovieThreeListCategories: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -139,7 +139,28 @@ extension MovieThreeListCategories: UICollectionViewDelegate, UICollectionViewDa
         let height = collectionView.bounds.height
         return CGSize(width: width, height: height)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let movieID: Int
+        switch collectionView.tag {
+        case 0:
+            movieID = popularMovies[indexPath.item].id
+        case 1:
+            movieID = freeToWatchMovies[indexPath.item].id
+        case 2:
+            movieID = trendingMovies[indexPath.item].id
+        default:
+            return
+        }
+        
+        let movieDetailsViewController = MovieDetailsViewController()
+        movieDetailsViewController.movieID = movieID
+        movieDetailsViewController.navigationItem.title = "Movie Details"
+        navigationController?.pushViewController(movieDetailsViewController, animated: true)
+    }
+    
 }
+
 
 extension UIImageView {
     func load(url: URL?) {

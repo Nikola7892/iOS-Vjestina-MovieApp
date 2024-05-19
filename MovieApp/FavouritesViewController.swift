@@ -1,8 +1,15 @@
-//
-//  FavouritesViewController.swift
-//  MovieApp
-//
-//  Created by Nikola Zrnc on 18.05.2024..
-//
 
 import Foundation
+import UIKit
+
+class FavouritesViewController: UIViewController {
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        styleViews()
+    }
+    
+    private func styleViews() {
+        view.backgroundColor = .white
+    }
+}

@@ -9,11 +9,20 @@ class MovieListViewController: UIViewController {
     private var collectionView: UICollectionView!
     private let movieUseCase = MovieUseCase()
     
+    
+    private var router: AppRouterProtocol!
+    
+    convenience init(router: AppRouterProtocol) {
+        self.init()
+        self.router = router
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         buildViews()
         setupLayout()
         
+        self.navigationItem.title = "Movie List"
         NotificationCenter.default.addObserver(self, selector: #selector(deviceOrientationDidChange), name: UIDevice.orientationDidChangeNotification, object: nil)
     }
     
@@ -61,6 +70,15 @@ extension MovieListViewController: UICollectionViewDelegate, UICollectionViewDat
         cell.configure(with: movie.imageUrl, title: movie.name,info: movie.summary)
             return cell
     }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+            let movie = movieUseCase.allMovies[indexPath.item]
+            let movieDetailsViewController = MovieDetailsViewController()
+            movieDetailsViewController.movieID = movie.id
+            movieDetailsViewController.navigationItem.title = "Movie Details"
+            navigationController?.pushViewController(movieDetailsViewController, animated: true)
+        }
 }
 
 extension MovieListViewController: UICollectionViewDelegateFlowLayout {
