@@ -15,7 +15,7 @@ class AppRouter: AppRouterProtocol {
     }
     
     func setStartScreen(in window: UIWindow?) {
-        let vc = HomeViewController(router:self)
+        let vc = QuizCategoriesViewController(router:self)
         
         navigationController.pushViewController(vc, animated: false)
         
